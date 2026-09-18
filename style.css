@@ -450,6 +450,11 @@ body {
   transform: translateY(-3px);
 }
 
+/* Stays out of the way until the secret date is entered */
+.music-player.hidden {
+  display: none;
+}
+
 .player-icon {
   font-size: 18px;
 }

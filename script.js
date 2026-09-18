@@ -155,14 +155,20 @@ function revealLockedPhotos() {
   lockedPhotos.forEach((img) => img.classList.remove("locked"));
 }
 
+// The floating song button only makes sense once the surprise is open
+function revealMusicPlayer() {
+  musicPlayer.classList.remove("hidden");
+}
+
 function tryUnlock() {
   if (passwordInput.value.trim() === SPECIAL_DATE) {
     errorEl.textContent = "";
     revealSurprise();
     revealLockedPhotos();
+    revealMusicPlayer();
     openPopup();
   } else {
-    errorEl.textContent = "Wrong date 💔";
+    errorEl.textContent = "Wrong date \u{1F494}";
   }
 }
 unlockBtn.addEventListener("click", tryUnlock);
