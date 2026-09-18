@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>For marioma ❤️</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❤️</text></svg>"
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Dancing+Script:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Floating Hearts -->
+    <div class="hearts"></div>
+
+    <!-- HERO -->
+    <section class="hero">
+      <!-- فيديو خلفية -->
+      <video autoplay muted loop class="hero-video">
+        <source src="hero-video1.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      <!-- النصوص فوق الفيديو -->
+      <div class="hero-content">
+        <p id="greeting" class="greeting-top"></p>
+        <h1 data-aos="zoom-in">For marioma ❤️</h1>
+        <p
+          id="typewriter"
+          aria-label="Some stories are written by destiny… ours is written by love"
+        ></p>
+        <button id="startButton">Start Our Story</button>
+        <div class="bounce-arrow" id="scrollArrow" aria-hidden="true">↓</div>
+      </div>
+    </section>
+
+    <!-- MESSAGE -->
+    <section class="message" data-aos="fade-up">
+      <h2>Dear marioma 💕</h2>
+      <p id="messageText" class="message-text" aria-live="polite"></p>
+      <p class="quote">“In your smile, I found my favorite place.”</p>
+    </section>
+
+    <!-- COUNTER -->
+    <section class="counter-section" data-aos="fade-up">
+      <h2 id="counterTitle">Counting Up Since Our Special Day ❤️</h2>
+      <p class="counter-sub">
+        counting up since our special day · 2/10/2025 💫
+      </p>
+      <div class="counter">
+        <div class="counter-box">
+          <span id="days">0</span><small>Days</small>
+        </div>
+        <div class="counter-box">
+          <span id="hours">00</span><small>Hours</small>
+        </div>
+        <div class="counter-box">
+          <span id="minutes">00</span><small>Minutes</small>
+        </div>
+        <div class="counter-box">
+          <span id="seconds">00</span><small>Seconds</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHOTOS (2 visible · the rest unlock with the surprise) -->
+    <section class="gallery">
+      <img
+        src="marioma 6.jpeg"
+        alt="Our special memory 1"
+        data-aos="zoom-in"
+        loading="lazy"
+      />
+      <img
+        src="marioma 2.jpeg"
+        alt="Our special memory 2"
+        data-aos="zoom-in"
+        data-aos-delay="150"
+        loading="lazy"
+      />
+      <img class="locked" src="marioma 3.jpeg" alt="Our special memory 3" loading="lazy" />
+      <img class="locked" src="marioma 4.jpeg" alt="Our special memory 4" loading="lazy" />
+      <img class="locked" src="marioma 5.jpeg" alt="Our special memory 5" loading="lazy" />
+      <img class="locked" src="marioma.jpeg" alt="Our special memory 6" loading="lazy" />
+      <p class="quote" data-aos="fade-up">
+        Every picture holds a thousand words we never said 📸
+      </p>
+    </section>
+
+    <!-- SECRET -->
+    <section class="secret" id="secret">
+      <h2 data-aos="fade-up">Secret Surprise 🔐</h2>
+      <p class="quote" data-aos="fade-up">
+        Some secrets are meant to be shared… especially with the best friend who
+        knows all my crazy stories 😂❤️
+      </p>
+
+      <p class="hint-text">
+        I could tell you the secret… but you know me, I have to keep you curious
+        😉
+      </p>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter our special date"
+        autocomplete="off"
+        aria-label="Enter our special date"
+      />
+      <button id="unlockBtn">Unlock</button>
+
+      <p id="error"></p>
+
+      <div id="surprise" class="hidden">
+        <p class="final-text">This song… Every word in it feels like you ❤️</p>
+
+        <audio id="song" src="شيرين 2.mp3" preload="none"></audio>
+      </div>
+    </section>
+    <!-- LOVE POPUP -->
+    <div id="lovePopup" class="love-popup hidden">
+      <div class="love-popup-content">
+        <div class="hearts-popup" aria-hidden="true"></div>
+        <h2>Dear marioma ❤️</h2>
+        <p>
+          You didn’t just become a part of my life… you became one of my
+          favorite people. Every laugh, every crazy moment, and every memory
+          with you is something I’ll always cherish ❤️
+        </p>
+        <button id="closePopupBtn" aria-label="Close">Close</button>
+      </div>
+    </div>
+
+    <!-- LIGHTBOX -->
+    <div
+      id="lightbox"
+      class="lightbox hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Photo viewer"
+    >
+      <button
+        class="lightbox-btn lightbox-close"
+        id="lightboxClose"
+        aria-label="Close"
+      >
+        ✕
+      </button>
+      <button
+        class="lightbox-btn lightbox-prev"
+        id="lightboxPrev"
+        aria-label="Previous"
+      >
+        ‹
+      </button>
+      <img id="lightboxImg" src="" alt="Enlarged memory" />
+      <button
+        class="lightbox-btn lightbox-next"
+        id="lightboxNext"
+        aria-label="Next"
+      >
+        ›
+      </button>
+    </div>
+
+    <!-- FLOATING MUSIC PLAYER -->
+    <button id="musicPlayer" class="music-player" aria-label="Toggle our song">
+      <span class="player-icon" aria-hidden="true">🎵</span>
+      <span class="player-text">Play our song</span>
+      <span class="player-eq" aria-hidden="true"
+        ><span></span><span></span><span></span
+      ></span>
+    </button>
+
+    <!-- AOS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init({ duration: 1200 });
+    </script>
+
+    <!-- JS -->
+    <script src="script.js"></script>
+  </body>
+</html>
