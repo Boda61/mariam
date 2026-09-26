@@ -1,11 +1,11 @@
-﻿// =====================================================
+// =====================================================
 // For mo2a - Main Script (clean, organized)
 // =====================================================
 
 const SPECIAL_DATE = "2/10/2025"; // the date that unlocks the surprise
 const OUR_DATE_LABEL = "2/10/2025"; // single source for the date shown in the counter text
 const OUR_DATE = new Date(2025, 9, 2, 0, 0, 0); // 2 Oct 2025, 00:00 local time (month is 0-indexed)
-const SONG_NAME = "Sherine - 3yoonak dawbony ❤️.mp3"; // the name of the song file (for the floating player)
+const SONG_NAME = "Sherine - نظره عيني ❤️.mp3"; // the name of the song file (for the floating player)
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // ---------- DOM references ----------
@@ -26,6 +26,8 @@ const errorEl = document.getElementById("error");
 const surpriseEl = document.getElementById("surprise");
 const lockedPhotos = Array.from(document.querySelectorAll(".gallery img.locked"));
 const lovePopup = document.getElementById("lovePopup");
+const envelope = document.getElementById("envelope");
+const waxSeal = document.getElementById("waxSeal");
 const heartsContainer = document.querySelector(".hearts-popup");
 const song = document.getElementById("song");
 const closePopupBtn = document.getElementById("closePopupBtn");
@@ -220,24 +222,64 @@ function pauseSong() {
   song.pause();
 }
 
-function openPopup() {
+function spawnEnvelopeBurst() {
+  if (!heartsContainer) return;
   heartsContainer.innerHTML = "";
-  for (let i = 0; i < 20; i++) {
+  const icons = ["❤️", "💖", "✨", "🌸", "💕", "🌹"];
+  for (let i = 0; i < 28; i++) {
     const heart = document.createElement("span");
     heart.classList.add("heart-popup");
-    heart.textContent = "\u{1F496}";
+    heart.textContent = icons[Math.floor(Math.random() * icons.length)];
     heart.style.left = Math.random() * 90 + 5 + "%";
-    heart.style.animationDuration = 2 + Math.random() * 3 + "s";
-    heart.style.opacity = 0.3 + Math.random() * 0.7;
+    heart.style.animationDuration = 2 + Math.random() * 2.5 + "s";
+    heart.style.opacity = (0.4 + Math.random() * 0.6).toFixed(2);
+    heart.style.fontSize = Math.floor(16 + Math.random() * 18) + "px";
+    heart.style.animationDelay = (Math.random() * 0.4).toFixed(2) + "s";
     heartsContainer.appendChild(heart);
   }
-  lovePopup.classList.remove("hidden");
-  playSong(true); // start our song from the beginning for the surprise
 }
 
-closePopupBtn.addEventListener("click", () => {
+function openLetterEnvelope() {
+  if (envelope && !envelope.classList.contains("opened")) {
+    envelope.classList.add("opened");
+    spawnEnvelopeBurst();
+    playSong(true); // Start song when letter is opened!
+  }
+}
+
+if (waxSeal) {
+  waxSeal.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openLetterEnvelope();
+  });
+}
+
+function openPopup() {
+  if (envelope) {
+    envelope.classList.remove("opened");
+  }
+  if (heartsContainer) {
+    heartsContainer.innerHTML = "";
+  }
+  lovePopup.classList.remove("hidden");
+}
+
+function closePopup() {
   lovePopup.classList.add("hidden");
-  // NOT pausing the song on purpose — the music keeps playing after closing
+}
+
+closePopupBtn.addEventListener("click", closePopup);
+
+lovePopup.addEventListener("click", (e) => {
+  if (e.target === lovePopup) {
+    closePopup();
+  }
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !lovePopup.classList.contains("hidden")) {
+    closePopup();
+  }
 });
 
 // =====================================================
@@ -321,3 +363,234 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "ArrowRight") nextPhoto();
   if (event.key === "ArrowLeft") prevPhoto();
 });
+
+// =====================================================
+// 10) STAR SKY — animated stars on canvas background
+// =====================================================
+(function initStars() {
+  const canvas = document.getElementById("starCanvas");
+  const ctx = canvas.getContext("2d");
+  let stars = [];
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function createStars(count) {
+    stars = [];
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x:      Math.random() * canvas.width,
+        y:      Math.random() * canvas.height,
+        r:      Math.random() * 1.6 + 0.3,
+        alpha:  Math.random(),
+        speed:  Math.random() * 0.006 + 0.002,
+        dir:    Math.random() < 0.5 ? 1 : -1,
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach((s) => {
+      s.alpha += s.speed * s.dir;
+      if (s.alpha >= 1 || s.alpha <= 0) s.dir *= -1;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(230, 57, 70, ${s.alpha * 0.7})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+
+  resize();
+  createStars(160);
+  drawStars();
+  window.addEventListener("resize", () => { resize(); createStars(160); });
+})();
+
+// =====================================================
+// 11) CONFETTI — burst on first load
+// =====================================================
+(function initConfetti() {
+  if (reduceMotion) return;
+
+  const duration = 3500;
+  const end = Date.now() + duration;
+
+  const colors = ["#e63946", "#ff8fa3", "#ff4d6d", "#ffd6dc", "#c9184a"];
+
+  function frame() {
+    confetti({
+      particleCount: 4,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors,
+    });
+    confetti({
+      particleCount: 4,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors,
+    });
+    if (Date.now() < end) requestAnimationFrame(frame);
+  }
+
+  // Small delay so it fires after the page paints
+  setTimeout(frame, 400);
+})();
+
+// =====================================================
+// 12) MOUSE TRAIL — romantic words follow the cursor
+// =====================================================
+(function initMouseTrail() {
+  if (reduceMotion) return;
+
+  const container = document.getElementById("mouseTrail");
+  const words = ["❤️", "love", "marioma", "✨", "💕", "forever", "🌸", "sweet", "💫"];
+  let wordIndex = 0;
+  let lastTime = 0;
+  const THROTTLE = 200; // ms between words
+
+  document.addEventListener("mousemove", (e) => {
+    const now = Date.now();
+    if (now - lastTime < THROTTLE) return;
+    lastTime = now;
+
+    const span = document.createElement("span");
+    span.className = "trail-word";
+    span.textContent = words[wordIndex % words.length];
+    wordIndex++;
+    span.style.left = e.clientX + "px";
+    span.style.top  = e.clientY + "px";
+    container.appendChild(span);
+
+    span.addEventListener("animationend", () => span.remove(), { once: true });
+  });
+})();
+
+// =====================================================
+// 13) BIRTHDAY COUNTDOWN — November 15
+// =====================================================
+(function initBirthdayCounter() {
+  const bdaysEl    = document.getElementById("bdays");
+  const bhoursEl   = document.getElementById("bhours");
+  const bminutesEl = document.getElementById("bminutes");
+  const bsecondsEl = document.getElementById("bseconds");
+
+  function getNextBirthday() {
+    const now = new Date();
+    let bday = new Date(now.getFullYear(), 10, 15, 0, 0, 0); // Nov = month 10
+    if (bday <= now) bday = new Date(now.getFullYear() + 1, 10, 15, 0, 0, 0);
+    return bday;
+  }
+
+  function updateBirthday() {
+    const diff = getNextBirthday() - Date.now();
+    if (diff <= 0) {
+      bdaysEl.textContent    = "🎂";
+      bhoursEl.textContent   = "Happy";
+      bminutesEl.textContent = "Birth";
+      bsecondsEl.textContent = "day!";
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    bdaysEl.textContent    = d;
+    bhoursEl.textContent   = String(h).padStart(2, "0");
+    bminutesEl.textContent = String(m).padStart(2, "0");
+    bsecondsEl.textContent = String(s).padStart(2, "0");
+  }
+
+  updateBirthday();
+  setInterval(updateBirthday, 1000);
+})();
+
+// =====================================================
+// 14) FLIP CARDS — toggle on click / Enter key
+// =====================================================
+document.querySelectorAll(".flip-card").forEach((card) => {
+  card.addEventListener("click", () => card.classList.toggle("flipped"));
+  card.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      card.classList.toggle("flipped");
+    }
+  });
+});
+
+// =====================================================
+// 15) SCRATCH CARD — canvas-based scratcher
+// =====================================================
+(function initScratchCard() {
+  const canvas  = document.getElementById("scratchCanvas");
+  const ctx     = canvas.getContext("2d");
+  const resetBtn = document.getElementById("scratchReset");
+
+  function buildScratchLayer() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Pink/rose gradient cover
+    const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    grad.addColorStop(0, "#e63946");
+    grad.addColorStop(1, "#c1121f");
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.roundRect(0, 0, canvas.width, canvas.height, 20);
+    ctx.fill();
+
+    // Hint text on top
+    ctx.fillStyle = "rgba(255,255,255,0.7)";
+    ctx.font = "bold 18px Poppins, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("🪙  Scratch here!", canvas.width / 2, canvas.height / 2 - 8);
+    ctx.font = "14px Poppins, sans-serif";
+    ctx.fillText("Use your finger or mouse", canvas.width / 2, canvas.height / 2 + 18);
+  }
+
+  buildScratchLayer();
+
+  // Eraser compositing
+  ctx.globalCompositeOperation = "destination-out";
+
+  let painting = false;
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const src  = e.touches ? e.touches[0] : e;
+    return {
+      x: (src.clientX - rect.left) * (canvas.width  / rect.width),
+      y: (src.clientY - rect.top)  * (canvas.height / rect.height),
+    };
+  }
+
+  function scratch(e) {
+    if (!painting) return;
+    const { x, y } = getPos(e);
+    ctx.beginPath();
+    ctx.arc(x, y, 24, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  canvas.addEventListener("mousedown",  (e) => { painting = true; scratch(e); });
+  canvas.addEventListener("mousemove",  scratch);
+  canvas.addEventListener("mouseup",    () => { painting = false; });
+  canvas.addEventListener("mouseleave", () => { painting = false; });
+
+  canvas.addEventListener("touchstart", (e) => { e.preventDefault(); painting = true; scratch(e); }, { passive: false });
+  canvas.addEventListener("touchmove",  (e) => { e.preventDefault(); scratch(e); },                  { passive: false });
+  canvas.addEventListener("touchend",   () => { painting = false; });
+
+  resetBtn.addEventListener("click", () => {
+    // Reset composite to source-over to repaint the cover
+    ctx.globalCompositeOperation = "source-over";
+    buildScratchLayer();
+    ctx.globalCompositeOperation = "destination-out";
+  });
+})();
+

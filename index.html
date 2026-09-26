@@ -24,6 +24,15 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <!-- Star sky canvas -->
+    <canvas id="starCanvas" aria-hidden="true"></canvas>
+
+    <!-- Confetti canvas -->
+    <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+    <!-- Mouse trail container -->
+    <div id="mouseTrail" aria-hidden="true"></div>
+
     <!-- Floating Hearts -->
     <div class="hearts"></div>
 
@@ -92,13 +101,129 @@
         data-aos-delay="150"
         loading="lazy"
       />
-      <img class="locked" src="marioma 3.jpeg" alt="Our special memory 3" loading="lazy" />
-      <img class="locked" src="marioma 4.jpeg" alt="Our special memory 4" loading="lazy" />
-      <img class="locked" src="marioma 5.jpeg" alt="Our special memory 5" loading="lazy" />
-      <img class="locked" src="marioma.jpeg" alt="Our special memory 6" loading="lazy" />
+      <img
+        class="locked"
+        src="marioma 3.jpeg"
+        alt="Our special memory 3"
+        loading="lazy"
+      />
+      <img
+        class="locked"
+        src="marioma 4.jpeg"
+        alt="Our special memory 4"
+        loading="lazy"
+      />
+      <img
+        class="locked"
+        src="marioma 5.jpeg"
+        alt="Our special memory 5"
+        loading="lazy"
+      />
+      <img
+        class="locked"
+        src="marioma.jpeg"
+        alt="Our special memory 6"
+        loading="lazy"
+      />
       <p class="quote" data-aos="fade-up">
         Every picture holds a thousand words we never said 📸
       </p>
+    </section>
+
+    <!-- BIRTHDAY COUNTDOWN -->
+    <section class="birthday-section" data-aos="fade-up">
+      <h2>🎂 Counting Down to marioma's Birthday</h2>
+      <p class="counter-sub">November 15 is coming… get ready 🎉</p>
+      <div class="counter" id="birthdayCounter">
+        <div class="counter-box">
+          <span id="bdays">0</span><small>Days</small>
+        </div>
+        <div class="counter-box">
+          <span id="bhours">00</span><small>Hours</small>
+        </div>
+        <div class="counter-box">
+          <span id="bminutes">00</span><small>Minutes</small>
+        </div>
+        <div class="counter-box">
+          <span id="bseconds">00</span><small>Seconds</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLIP CARDS — Reasons -->
+    <section class="reasons-section" data-aos="fade-up">
+      <h2>Why You're My Favorite Person 💕</h2>
+      <p class="counter-sub">Click any card to flip it ✨</p>
+      <div class="cards-grid" id="cardsGrid">
+        <div class="flip-card" tabindex="0" aria-label="Flip card 1">
+          <div class="flip-inner">
+            <div class="flip-front">❤️</div>
+            <div class="flip-back">
+              Because your laugh is literally contagious 😂
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" tabindex="0" aria-label="Flip card 2">
+          <div class="flip-inner">
+            <div class="flip-front">💫</div>
+            <div class="flip-back">
+              Because you make every boring moment fun 🎉
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" tabindex="0" aria-label="Flip card 3">
+          <div class="flip-inner">
+            <div class="flip-front">🌙</div>
+            <div class="flip-back">
+              Because you understand me without me saying a word 🫶
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" tabindex="0" aria-label="Flip card 4">
+          <div class="flip-inner">
+            <div class="flip-front">🌸</div>
+            <div class="flip-back">
+              Because having you as a friend is genuinely a blessing 💕
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" tabindex="0" aria-label="Flip card 5">
+          <div class="flip-inner">
+            <div class="flip-front">✨</div>
+            <div class="flip-back">
+              Because you always know how to make things better 🌟
+            </div>
+          </div>
+        </div>
+        <div class="flip-card" tabindex="0" aria-label="Flip card 6">
+          <div class="flip-inner">
+            <div class="flip-front">🎀</div>
+            <div class="flip-back">
+              Because every memory with you is golden 🥹❤️
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCRATCH CARD -->
+    <section class="scratch-section" data-aos="fade-up">
+      <h2>Scratch to Reveal 🤫</h2>
+      <p class="counter-sub">
+        I hid something just for you… scratch to see it 💝
+      </p>
+      <div class="scratch-wrapper">
+        <div class="scratch-message" id="scratchMessage">
+          You are the reason my days are brighter ☀️❤️
+        </div>
+        <canvas
+          id="scratchCanvas"
+          width="320"
+          height="140"
+          aria-label="Scratch here to reveal a message"
+        ></canvas>
+      </div>
+      <button class="scratch-reset" id="scratchReset">Try Again 🔄</button>
     </section>
 
     <!-- SECRET -->
@@ -128,20 +253,54 @@
       <div id="surprise" class="hidden">
         <p class="final-text">This song… Every word in it feels like you ❤️</p>
 
-        <audio id="song" src="شيرين 2.mp3" preload="none"></audio>
+        <audio id="song" src="شيرين 1.mp3" preload="none"></audio>
       </div>
     </section>
-    <!-- LOVE POPUP -->
-    <div id="lovePopup" class="love-popup hidden">
-      <div class="love-popup-content">
+    <!-- LOVE ENVELOPE MODAL -->
+    <div id="lovePopup" class="love-popup hidden" role="dialog" aria-modal="true" aria-label="Special Letter for marioma">
+      <button class="envelope-close-btn" id="closePopupBtn" aria-label="Close letter">✕</button>
+      
+      <div class="envelope-scene">
         <div class="hearts-popup" aria-hidden="true"></div>
-        <h2>Dear marioma ❤️</h2>
-        <p>
-          You didn’t just become a part of my life… you became one of my
-          favorite people. Every laugh, every crazy moment, and every memory
-          with you is something I’ll always cherish ❤️
-        </p>
-        <button id="closePopupBtn" aria-label="Close">Close</button>
+        
+        <div class="envelope-wrapper">
+          <div class="envelope" id="envelope">
+            <div class="envelope-back"></div>
+            
+            <!-- Letter inside -->
+            <div class="letter-card" id="letterCard">
+              <div class="letter-paper">
+                <span class="letter-stamp">💌</span>
+                <h2>Dear marioma ❤️</h2>
+                <p>
+                  You didn’t just become a part of my life… you became one of my
+                  favorite people. Every laugh, every crazy moment, and every memory
+                  with you is something I’ll always cherish ❤️
+                </p>
+                <div class="letter-footer">
+                  <span>Forever & Always</span>
+                  <span class="letter-heart">💖</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Envelope front folds -->
+            <div class="envelope-front envelope-front-left"></div>
+            <div class="envelope-front envelope-front-right"></div>
+            <div class="envelope-front envelope-front-bottom"></div>
+            
+            <!-- Top Flap -->
+            <div class="envelope-flap" id="envelopeFlap"></div>
+            
+            <!-- Wax Seal Button -->
+            <button class="wax-seal" id="waxSeal" aria-label="Break seal and open letter">
+              <span class="wax-seal-inner">
+                <span class="seal-heart">❤️</span>
+              </span>
+              <span class="seal-hint">Tap to open 💌</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -157,7 +316,7 @@
         class="lightbox-btn lightbox-close"
         id="lightboxClose"
         aria-label="Close"
-      >
+      >   
         ✕
       </button>
       <button
@@ -195,6 +354,9 @@
     <script>
       AOS.init({ duration: 1200 });
     </script>
+
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
     <!-- JS -->
     <script src="script.js"></script>
